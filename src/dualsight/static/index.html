@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="DualSight gives text-only LLMs eyes: a vision model writes structured evidence, and your reasoning model answers from it."
+    />
+    <meta name="theme-color" content="#070b14" />
+    <title>DualSight — give your text-only LLM eyes</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/assets/styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#workspace">Skip to the demo</a>
+
+    <div class="page-glow" aria-hidden="true"></div>
+
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="DualSight home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" role="img">
+            <path
+              d="M4 16c3.2-5.2 7.2-7.8 12-7.8S24.8 10.8 28 16c-3.2 5.2-7.2 7.8-12 7.8S7.2 21.2 4 16Z"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            />
+            <circle cx="16" cy="16" r="4" fill="currentColor" />
+            <circle cx="17.5" cy="14.5" r="1.4" fill="#070b14" />
+          </svg>
+        </span>
+        <span class="brand-name">DualSight</span>
+        <span class="brand-version">v0.1.0</span>
+      </a>
+
+      <nav class="site-nav" aria-label="Primary">
+        <a href="#how">How it works</a>
+        <a href="/docs">API docs</a>
+        <a class="nav-pill" id="mode-badge" href="#offline" title="Provider mode">
+          <span class="dot"></span>
+          <span id="mode-text">checking mode</span>
+        </a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">
+            <span class="eyebrow-line"></span>
+            A perception sidecar for language models
+          </p>
+          <h1>
+            Give your text-only LLM
+            <span class="gradient-text">eyes.</span>
+          </h1>
+          <p class="lede">
+            DualSight runs a second, vision-capable model over every image. It turns
+            pixels into compact, source-attributed evidence, then hands that evidence
+            to the reasoning model you already use — no image tokens, no model swap.
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#workspace">
+              Try the live demo
+              <svg viewBox="0 0 20 20" aria-hidden="true">
+                <path d="M4 10h11M11 5l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </a>
+            <a class="button button-ghost" href="#how">See the architecture</a>
+          </div>
+          <ul class="hero-facts" aria-label="Highlights">
+            <li><strong>OpenAI-compatible</strong><span>drop-in endpoint</span></li>
+            <li><strong>3 providers</strong><span>OpenAI · Anthropic · Gemini</span></li>
+            <li><strong>MIT</strong><span>self-hosted</span></li>
+          </ul>
+        </div>
+
+        <div class="hero-visual" aria-hidden="true">
+          <div class="orbit orbit-a"></div>
+          <div class="orbit orbit-b"></div>
+          <div class="visual-stack">
+            <div class="visual-card visual-vision">
+              <span class="visual-label">VISION</span>
+              <div class="visual-image">
+                <div class="visual-sun"></div>
+                <div class="visual-hill hill-a"></div>
+                <div class="visual-hill hill-b"></div>
+                <div class="scan-line"></div>
+              </div>
+              <p>“receipt, 9 text lines, total $23.47”</p>
+            </div>
+            <div class="visual-arrow">
+              <span>evidence</span>
+              <svg viewBox="0 0 44 12"><path d="M1 6h38M34 1l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.5" /></svg>
+            </div>
+            <div class="visual-card visual-text">
+              <span class="visual-label">REASONING</span>
+              <div class="visual-lines">
+                <i style="width: 88%"></i><i style="width: 72%"></i><i style="width: 94%"></i><i style="width: 54%"></i>
+              </div>
+              <p>The total is <b>$23.47</b>, including $1.76 tax.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="workspace" id="workspace" aria-label="Interactive demo">
+        <div class="panel input-panel">
+          <div class="panel-head">
+            <div>
+              <span class="step">01</span>
+              <h2>Image + question</h2>
+            </div>
+            <span class="panel-hint">PNG, JPEG, WebP, GIF · up to 12 MB</span>
+          </div>
+
+          <div class="dropzone" id="dropzone">
+            <input type="file" id="file-input" accept="image/png,image/jpeg,image/webp,image/gif" hidden />
+            <div class="drop-empty" id="drop-empty">
+              <span class="drop-icon" aria-hidden="true">
+                <svg viewBox="0 0 32 32">
+                  <rect x="4" y="6" width="24" height="20" rx="3" fill="none" stroke="currentColor" stroke-width="1.7" />
+                  <circle cx="11" cy="12" r="2.2" fill="currentColor" />
+                  <path d="m6 23 7-7 5 5 3-3 5 5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" />
+                </svg>
+              </span>
+              <p><b>Drop an image</b> or <span class="link-like">browse</span></p>
+              <small>You can also paste from the clipboard</small>
+            </div>
+
+            <div class="preview" id="preview" hidden>
+              <img id="preview-img" alt="Selected image preview" />
+              <div class="preview-scan" aria-hidden="true"></div>
+              <div class="preview-info">
+                <span id="preview-name">sample-card.png</span>
+                <span id="preview-meta">1200 × 760</span>
+              </div>
+              <button class="icon-button" id="remove-image" type="button" title="Remove image" aria-label="Remove image">
+                <svg viewBox="0 0 20 20"><path d="m5 5 10 10M15 5 5 15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" /></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="samples-head">
+            <span>Or try a synthetic sample</span>
+            <span class="samples-note" id="sample-note">mock-friendly</span>
+          </div>
+          <div class="samples" id="samples">
+            <button class="sample" type="button" data-src="/assets/samples/sample-card.png" data-profile="auto" data-question="What does the card say, and what colors are used?">
+              <img src="/assets/samples/sample-card.png" alt="" />
+              <span><b>Card</b><small>Brand</small></span>
+            </button>
+            <button class="sample" type="button" data-src="/assets/samples/sample-receipt.png" data-profile="receipt" data-question="What is the total, and which item cost the most?">
+              <img src="/assets/samples/sample-receipt.png" alt="" />
+              <span><b>Receipt</b><small>OCR + totals</small></span>
+            </button>
+            <button class="sample" type="button" data-src="/assets/samples/sample-chart.png" data-profile="chart" data-question="What is the trend across the four weeks?">
+              <img src="/assets/samples/sample-chart.png" alt="" />
+              <span><b>Chart</b><small>Trend</small></span>
+            </button>
+            <button class="sample" type="button" data-src="/assets/samples/sample-ui.png" data-profile="ui" data-question="What is the error, and why can't I save?">
+              <img src="/assets/samples/sample-ui.png" alt="" />
+              <span><b>Interface</b><small>UI state</small></span>
+            </button>
+            <button class="sample" type="button" data-src="/assets/samples/sample-diagram.png" data-profile="diagram" data-question="Describe the pipeline and what connects to the reasoning model.">
+              <img src="/assets/samples/sample-diagram.png" alt="" />
+              <span><b>Diagram</b><small>Structure</small></span>
+            </button>
+          </div>
+
+          <div class="field">
+            <label for="question">Your question</label>
+            <textarea id="question" rows="3" maxlength="4000" placeholder="e.g. What is the total on this receipt?">What does the card say, and what colors are used?</textarea>
+            <div class="field-foot">
+              <span>Ask about anything visible — text, layout, values, or state.</span>
+              <span id="question-count">57 / 4000</span>
+            </div>
+          </div>
+
+          <div class="options">
+            <div class="option">
+              <label for="profile">Perception profile</label>
+              <select id="profile">
+                <option value="auto">Auto-detect</option>
+                <option value="document">Document</option>
+                <option value="receipt">Receipt</option>
+                <option value="chart">Chart</option>
+                <option value="ui">Interface</option>
+                <option value="diagram">Diagram</option>
+                <option value="photo">Photo</option>
+              </select>
+            </div>
+            <div class="option">
+              <span class="option-label">Detail</span>
+              <div class="segmented" id="detail" role="radiogroup" aria-label="Evidence detail">
+                <button type="button" role="radio" aria-checked="false" data-value="brief">Brief</button>
+                <button type="button" role="radio" aria-checked="true" data-value="standard" class="is-active">Standard</button>
+                <button type="button" role="radio" aria-checked="false" data-value="deep">Deep</button>
+              </div>
+            </div>
+          </div>
+
+          <details class="advanced">
+            <summary>Advanced</summary>
+            <div class="advanced-grid">
+              <div class="option">
+                <label for="api-key">API key <span>(only if the server requires one)</span></label>
+                <input id="api-key" type="password" autocomplete="off" placeholder="DUALSIGHT_API_KEY" />
+              </div>
+              <label class="check">
+                <input type="checkbox" id="bypass-cache" />
+                <span>Bypass the perception cache</span>
+              </label>
+            </div>
+          </details>
+
+          <button class="button button-primary button-wide" id="ask-btn" type="button" disabled>
+            <span class="button-label">Run perception + reasoning</span>
+            <span class="spinner" aria-hidden="true"></span>
+            <kbd>Ctrl ↵</kbd>
+          </button>
+          <p class="status" id="input-status" role="status">Choose an image to begin.</p>
+        </div>
+
+        <div class="panel output-panel" id="output-panel">
+          <div class="panel-head">
+            <div>
+              <span class="step">02</span>
+              <h2>Grounded answer</h2>
+            </div>
+            <div class="model-chip" id="model-chip" title="Active reasoning model">dualsight</div>
+          </div>
+
+          <div class="empty-state" id="answer-empty">
+            <div class="empty-glyph" aria-hidden="true">
+              <svg viewBox="0 0 48 48">
+                <path d="M8 24c4.6-7.5 10.4-11.2 16-11.2S35.4 16.5 40 24c-4.6 7.5-10.4 11.2-16 11.2S12.6 31.5 8 24Z" fill="none" stroke="currentColor" stroke-width="2" />
+                <circle cx="24" cy="24" r="5.5" fill="none" stroke="currentColor" stroke-width="2" />
+                <circle cx="24" cy="24" r="1.8" fill="currentColor" />
+              </svg>
+            </div>
+            <h3>The model answers from evidence, not pixels.</h3>
+            <p>
+              Run the demo to watch the perception pass, the evidence block, and the
+              final answer appear here — with latency, cache, and token accounting.
+            </p>
+            <div class="empty-tags">
+              <span>source-attributed OCR</span>
+              <span>layout + uncertainty</span>
+              <span>no image tokens</span>
+            </div>
+          </div>
+
+          <div class="answer-shell" id="answer-shell" hidden>
+            <div class="pipeline" id="pipeline" aria-label="Processing stages">
+              <div class="pipe-step" data-step="image"><i></i><span>Image</span></div>
+              <div class="pipe-line"></div>
+              <div class="pipe-step" data-step="vision"><i></i><span>Perception</span></div>
+              <div class="pipe-line"></div>
+              <div class="pipe-step" data-step="evidence"><i></i><span>Evidence</span></div>
+              <div class="pipe-line"></div>
+              <div class="pipe-step" data-step="answer"><i></i><span>Answer</span></div>
+            </div>
+
+            <div class="answer-card">
+              <div class="answer-meta">
+                <span class="answer-role">assistant</span>
+                <span id="answer-timing">—</span>
+              </div>
+              <div class="answer-text" id="answer" aria-live="polite"></div>
+              <div class="typing" id="typing" hidden><i></i><i></i><i></i></div>
+            </div>
+
+            <div class="meta-row">
+              <div class="meta"><span>images</span><b id="meta-images">1</b></div>
+              <div class="meta"><span>vision</span><b id="meta-vision">—</b></div>
+              <div class="meta"><span>text</span><b id="meta-text">—</b></div>
+              <div class="meta"><span>cache</span><b id="meta-cache">—</b></div>
+              <div class="meta"><span>degraded</span><b id="meta-degraded">no</b></div>
+            </div>
+
+            <details class="evidence" id="evidence" open>
+              <summary>
+                <span class="evidence-title">
+                  <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M2 10c2-3.4 4.7-5 8-5s6 1.6 8 5c-2 3.4-4.7 5-8 5s-6-1.6-8-5Z" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="10" cy="10" r="2.4" fill="currentColor"/></svg>
+                  What the vision model saw
+                </span>
+                <span class="evidence-hint">structured evidence</span>
+              </summary>
+              <div class="evidence-body" id="evidence-body">
+                <p class="evidence-placeholder">The perception pass will appear here.</p>
+              </div>
+            </details>
+
+            <div class="error-box" id="error" hidden role="alert">
+              <strong>Request failed</strong>
+              <p id="error-text"></p>
+            </div>
+          </div>
+
+          <div class="output-foot">
+            <code>POST /v1/chat/completions</code>
+            <button class="copy-button" id="copy-curl" type="button">Copy cURL</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="how" id="how">
+        <div class="section-head">
+          <p class="eyebrow"><span class="eyebrow-line"></span>Under the hood</p>
+          <h2>Two models. One clean contract.</h2>
+          <p>
+            The vision model is a sensor. The reasoning model is the analyst. DualSight
+            is the wire between them — bounded, cached, and honest about uncertainty.
+          </p>
+        </div>
+        <div class="how-grid">
+          <article class="how-card">
+            <span class="how-num">01</span>
+            <div class="how-icon vision-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><rect x="2.5" y="4.5" width="19" height="15" rx="2.2" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="8.5" cy="9.5" r="1.6" fill="currentColor"/><path d="m4 17 5-5 3.5 3.5L15 13l5 5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+            </div>
+            <h3>Perceive</h3>
+            <p>
+              A question-agnostic pass extracts OCR, objects, layout, colors, chart
+              values, and explicit uncertainties. The result is cached by image hash.
+            </p>
+            <code>profile=auto · detail=standard</code>
+          </article>
+          <article class="how-card">
+            <span class="how-num">02</span>
+            <div class="how-icon evidence-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M6 3.5h9l4 4v13H6z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M15 3.5v4h4M9 11h7M9 14.5h7M9 18h4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <h3>Render evidence</h3>
+            <p>
+              Evidence becomes a fenced, nonce-tagged block with a clear “untrusted
+              data” boundary. Images are stripped before the text model is called.
+            </p>
+            <code>&lt;&lt;&lt;VISUAL_EVIDENCE …&gt;&gt;&gt;</code>
+          </article>
+          <article class="how-card">
+            <span class="how-num">03</span>
+            <div class="how-icon answer-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4 5.5h16v11H9l-5 4z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 9.5h8M8 12.5h5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <h3>Reason</h3>
+            <p>
+              Your existing text model answers from the evidence. Token usage,
+              latency, cache hits, and degradation are returned in one metadata block.
+            </p>
+            <code>OpenAI-compatible · streaming</code>
+          </article>
+        </div>
+
+        <div class="snippet-card">
+          <div class="snippet-head">
+            <span>One request, no image tokens</span>
+            <span class="snippet-lang">bash</span>
+          </div>
+          <pre><code id="curl-code">curl http://127.0.0.1:8000/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "dualsight",
+    "messages": [{
+      "role": "user",
+      "content": [
+        {"type": "text", "text": "What is the total?"},
+        {"type": "image_url", "image_url": {"url": "data:image/png;base64,..."}}
+      ]
+    }]
+  }'</code></pre>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-brand">
+        <span class="brand-mark small" aria-hidden="true">
+          <svg viewBox="0 0 32 32"><path d="M4 16c3.2-5.2 7.2-7.8 12-7.8S24.8 10.8 28 16c-3.2 5.2-7.2 7.8-12 7.8S7.2 21.2 4 16Z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="16" cy="16" r="4" fill="currentColor"/></svg>
+        </span>
+        <span>DualSight</span>
+      </div>
+      <p>MIT licensed · self-hosted · no image data leaves your infrastructure.</p>
+      <div class="footer-links">
+        <a href="/v1/dualsight/info">Instance info</a>
+        <a href="/healthz">Health</a>
+        <a href="/docs">OpenAPI</a>
+      </div>
+    </footer>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="/assets/app.js" defer></script>
+  </body>
+</html>
