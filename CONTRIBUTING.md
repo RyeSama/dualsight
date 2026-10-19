@@ -5,7 +5,7 @@ Thanks for helping. This project is intentionally small and readable; the goal i
 ## Development setup
 
 ```bash
-git clone https://github.com/dualsight/dualsight.git
+git clone https://github.com/RyeSama/dualsight.git
 cd dualsight
 python -m venv .venv
 source .venv/bin/activate        # Windows: .venv\Scripts\activate

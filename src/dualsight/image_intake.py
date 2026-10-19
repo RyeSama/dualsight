@@ -51,7 +51,7 @@ _BLOCKED_HOSTS = {
     "instance-data",
     "0.0.0.0",
 }
-_USER_AGENT = "DualSight/0.1 (+https://github.com/dualsight/dualsight)"
+_USER_AGENT = "DualSight/0.1 (+https://github.com/RyeSama/dualsight)"
 
 
 async def _resolve_host(host: str, port: int) -> list[str]:

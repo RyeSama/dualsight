@@ -6,7 +6,7 @@ DualSight sits between user content and two model providers. Treat the service a
 
 Please report security issues privately to the maintainers rather than opening a public issue. Until a dedicated security address is published, open a **private** GitHub security advisory:
 
-<https://github.com/dualsight/dualsight/security/advisories/new>
+<https://github.com/RyeSama/dualsight/security/advisories/new>
 
 Include a description, reproduction steps or a proof of concept, affected versions, and any suggested fix. We will acknowledge reports as soon as possible and coordinate disclosure after a fix is available.
 

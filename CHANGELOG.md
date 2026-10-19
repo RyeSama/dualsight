@@ -21,5 +21,5 @@ All notable changes to DualSight are documented here. The format follows [Keep a
 - Test suite covering configuration, intake, rendering, parsing, caching, request validation, providers, bridge, and HTTP API.
 - Dockerfile, Compose file, GitHub Actions CI, and bilingual documentation.
 
-[Unreleased]: https://github.com/dualsight/dualsight/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/dualsight/dualsight/releases/tag/v0.1.0
+[Unreleased]: https://github.com/RyeSama/dualsight/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/RyeSama/dualsight/releases/tag/v0.1.0

@@ -49,7 +49,7 @@ DualSight makes vision an **infrastructure concern** instead: one OpenAI-compati
 Python 3.10 or newer is required.
 
 ```bash
-git clone https://github.com/dualsight/dualsight.git
+git clone https://github.com/RyeSama/dualsight.git
 cd dualsight
 python -m venv .venv
 source .venv/bin/activate        # Windows: .venv\Scripts\activate

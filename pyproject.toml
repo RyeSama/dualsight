@@ -40,11 +40,11 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/dualsight/dualsight"
-Documentation = "https://github.com/dualsight/dualsight/tree/main/docs"
-Repository = "https://github.com/dualsight/dualsight"
-Issues = "https://github.com/dualsight/dualsight/issues"
-Changelog = "https://github.com/dualsight/dualsight/blob/main/CHANGELOG.md"
+Homepage = "https://github.com/RyeSama/dualsight"
+Documentation = "https://github.com/RyeSama/dualsight/tree/main/docs"
+Repository = "https://github.com/RyeSama/dualsight"
+Issues = "https://github.com/RyeSama/dualsight/issues"
+Changelog = "https://github.com/RyeSama/dualsight/blob/main/CHANGELOG.md"
 
 [project.scripts]
 dualsight = "dualsight.cli:main"

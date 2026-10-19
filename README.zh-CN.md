@@ -49,7 +49,7 @@ DualSight 把视觉变成**基础设施层**：一个兼容 OpenAI 的端点，�
 需要 Python 3.10 或更高版本。
 
 ```bash
-git clone https://github.com/dualsight/dualsight.git
+git clone https://github.com/RyeSama/dualsight.git
 cd dualsight
 python -m venv .venv
 source .venv/bin/activate        # Windows: .venv\Scripts\activate
